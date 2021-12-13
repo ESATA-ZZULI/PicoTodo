@@ -51,3 +51,28 @@ def log(request):
             return JsonResponse(jsonRes('没有该用户', 0))
         context = user.log_check_p(password)
     return JsonResponse(context)
+
+def add_list(request):
+    if request.method == 'POST':
+        todo_data = request.POST
+        user_id = todo_data['user_id']
+        title = todo_data['title']
+        print(title)
+        content = todo_data['content']
+        todo = models.Tasks()
+        todo.title = title
+        todo.content = content
+        todo.uid = models.Userinfo.objects.get(id=user_id)
+        todo.save()
+        context = jsonRes('添加成功',1)
+        return JsonResponse(context)
+def delete_list(request):
+    if request.method == 'POST':
+        data = request.POST
+        # user_id = data['user_id']
+        list_id = data['list_id']
+        list = models.Tasks.objects.get(id=list_id)
+        list.delete()
+        context = jsonRes('删除成功',1)
+        return JsonResponse(context)
+
