@@ -96,13 +96,13 @@ class Userinfo(AbstractBaseUser, PermissionsMixin):
 #         verbose_name_plural = "Userinfo"
 
 #
-# class Tasks(models.Model):
-#     uid = models.ForeignKey(Userinfo, on_delete=models.CASCADE)
-#     title = models.CharField(max_length=20)
-#     content = models.CharField(max_length=20)
-#     created_time = models.DateTimeField(auto_now_add=True)
-#     last_update_time = models.DateTimeField(auto_now=True)
-#     deadline = models.DateTimeField(max_length=20)
-#
-#     class Meta:
-#         verbose_name_plural = "Tasks"
+class Tasks(models.Model):
+    uid = models.ForeignKey(Userinfo, on_delete=models.CASCADE)
+    title = models.CharField(max_length=20)
+    content = models.CharField(max_length=20)
+    created_time = models.DateTimeField(auto_now_add=True)
+    last_update_time = models.DateTimeField(auto_now=True)
+    deadline = models.DateTimeField(max_length=20)
+
+    class Meta:
+        verbose_name_plural = "Tasks"
