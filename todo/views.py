@@ -6,11 +6,18 @@ from .models import Userinfo
 
 # Create your views here.
 
-def jsonRes(msg, status):
-    return {
-        'msg': msg,
-        'status': status
-    }
+def jsonRes(msg, status,context=False):
+    if context == False:
+        return {
+            'msg': msg,
+            'status': status,
+        }
+    else :
+        return {
+            'msg': msg,
+            'status': status,
+            'context':context,
+        }
 
 
 def index(request):
@@ -75,4 +82,28 @@ def delete_list(request):
         list.delete()
         context = jsonRes('删除成功',1)
         return JsonResponse(context)
+def change_list(request):
+    if request.method == 'GET':
+        data = request.GET
+        list_id = data['list_id']
+        list = models.Tasks.objects.get(id=list_id)
+        title = data['title']
+        content = data['content']
+        list.title = title
+        list.content = content
+        list.save()
+        context = jsonRes('修改成功',1)
+        return JsonResponse(context)
 
+def user_tasks(request):
+    if request.method == 'GET':
+        user = models.Userinfo.objects.get(id=request.GET['user_id'])
+        user_tasks = models.Tasks.objects.filter(uid=user).order_by('-id')
+        print(user_tasks)
+
+        user_tasks_list = []
+        for i in user_tasks:
+            obj = i.to_dict()
+            user_tasks_list.append(obj)
+        context = jsonRes('查找成功',1,user_tasks_list)
+        return JsonResponse(context)

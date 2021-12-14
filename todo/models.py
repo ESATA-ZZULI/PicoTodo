@@ -8,11 +8,18 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
-def jsonRes(msg, status):
-    return {
-        'msg': msg,
-        'status': status
-    }
+def jsonRes(msg, status,context=False):
+    if context == False:
+        return {
+            'msg': msg,
+            'status': status,
+        }
+    else :
+        return {
+            'msg': msg,
+            'status': status,
+            'context':context,
+        }
 
 
 # Create your models here.
@@ -103,6 +110,15 @@ class Tasks(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     last_update_time = models.DateTimeField(auto_now=True)
     # deadline = models.DateTimeField(max_length=20)
+
+    def to_dict(self):
+        obj = {
+            "id": self.id,
+            'title':self.title,
+            "content": self.content,
+            "created_time": self.created_time
+        }
+        return obj
 
     class Meta:
         verbose_name_plural = "Tasks"
